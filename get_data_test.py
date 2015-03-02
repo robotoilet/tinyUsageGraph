@@ -16,16 +16,22 @@ class TestGetData(unittest.TestCase):
     def test_last_files_number_of_returned_files_1(self):
         filenames = get_data.last_files('fixtures', self.rf, 2, self.sort_func)
         self.assertEqual(len(filenames), 2)
+        filenames = get_data.last_files('fixtures', self.rf, 3, self.sort_func)
+        self.assertEqual(len(filenames), 3)
 
     def test_last_files_number_of_returned_files_2(self):
-        # In our test data set there are only 4 suitable files, don't return
-        # more!
+        """
+        In our test data set there are only 5 suitable files, don't return
+        more!
+        """
         filenames = get_data.last_files('fixtures', self.rf, 6, self.sort_func)
         self.assertEqual(len(filenames), 5)
 
     def test_last_files_ordering_with_sort_function(self):
-        # Make sure the files are ordered properly, as in we want the
-        # most recent one
+        """
+        Make sure the files are ordered properly, as in we want the
+        most recent one
+        """
         filenames = get_data.last_files('fixtures', self.rf, 6, self.sort_func)
         self.assertEqual(filenames.index('fixtures/C1422466.123'), 4)
         self.assertEqual(filenames.index('fixtures/L1422366.510'), 3)
@@ -34,7 +40,9 @@ class TestGetData(unittest.TestCase):
         self.assertEqual(filenames.index('fixtures/C1421953.747'), 0)
 
     def test_last_files_ordering_without_sort_function(self):
-        # Without a sort function provided the order should be different:
+        """
+        Without a sort function provided the order should be different:
+        """
         filenames = get_data.last_files('fixtures', self.rf, 6, None)
         self.assertEqual(filenames.index('fixtures/L1422366.510'), 4)
         self.assertEqual(filenames.index('fixtures/L1422366.105'), 3)
@@ -50,6 +58,7 @@ class TestGetData(unittest.TestCase):
 
     def test_validate_datapoint_more_than_one_value(self):
         self.assertTrue(get_data.validate_datapoint('(a 1234567890 123 124)'))
+        self.assertTrue(get_data.validate_datapoint('(a 1234567890 1 2 3)'))
 
     def test_get_datapoints(self):
         points = get_data.get_datapoints('fixtures/C1421953.787')
